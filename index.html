@@ -122,8 +122,20 @@ tr:hover td{background:rgba(0,200,83,.025);}
 .mcd.today .mcd-num{color:var(--accent);font-weight:700;}
 .mcd.has-pay{background:var(--surface2);}
 .mcd-num{font-family:'IBM Plex Mono',monospace;font-size:9px;margin-bottom:2px;font-weight:500;}
-.mcd-pill{font-size:7px;font-family:'IBM Plex Mono',monospace;background:rgba(0,200,83,.18);color:var(--accent3);border-radius:1px;padding:1px 2px;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-bottom:1px;}
-.mcd-pill.paid{background:rgba(0,230,118,.06);color:var(--muted);text-decoration:line-through;}
+
+/* Mini calendar pills — rojo=pendiente, verde=pagado */
+.mcd-pill{
+  font-size:7px;font-family:'IBM Plex Mono',monospace;
+  border-radius:1px;padding:1px 2px;width:100%;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  line-height:1.3;margin-bottom:1px;
+  background:rgba(255,82,82,.18);color:#ff8a80;border:1px solid rgba(255,82,82,.25);
+}
+.mcd-pill.paid{
+  background:rgba(0,230,118,.15);color:var(--success);
+  border:1px solid rgba(0,230,118,.25);
+  text-decoration:none;
+}
 
 /* FULL CALENDAR */
 .cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -139,8 +151,26 @@ tr:hover td{background:rgba(0,200,83,.025);}
 .cal-day.has-payment{background:var(--surface2);}
 .cal-day-num{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;margin-bottom:3px;}
 .cal-pills{width:100%;display:flex;flex-direction:column;gap:2px;}
-.cal-pill{font-size:8px;font-family:'IBM Plex Mono',monospace;background:rgba(0,200,83,.18);color:var(--accent3);border-radius:1px;padding:1px 3px;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;}
-.cal-pill.paid{background:rgba(0,230,118,.06);color:var(--muted);text-decoration:line-through;}
+
+/* Full calendar pills — rojo=pendiente, verde=pagado */
+.cal-pill{
+  font-size:8px;font-family:'IBM Plex Mono',monospace;
+  border-radius:1px;padding:2px 3px;width:100%;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;
+  background:rgba(255,82,82,.18);color:#ff8a80;
+  border-left:2px solid var(--danger);
+  transition:all .2s;
+}
+.cal-pill.paid{
+  background:rgba(0,230,118,.12);color:var(--success);
+  border-left:2px solid var(--success);
+}
+
+/* Indicador de leyenda en el calendario */
+.cal-legend{display:flex;gap:16px;align-items:center;margin-bottom:12px;font-size:9px;font-family:'IBM Plex Mono',monospace;color:var(--muted2);}
+.cal-legend-dot{width:8px;height:8px;border-radius:1px;display:inline-block;margin-right:4px;}
+.cal-legend-dot.pending{background:var(--danger);}
+.cal-legend-dot.done{background:var(--success);}
 
 /* MOD LAYOUT */
 .mod-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
@@ -212,6 +242,10 @@ tr:hover td{background:rgba(0,200,83,.025);}
     </div>
     <div>
       <div class="section-title">Calendario</div>
+      <div class="cal-legend">
+        <span><span class="cal-legend-dot pending"></span>Pendiente</span>
+        <span><span class="cal-legend-dot done"></span>Pagado</span>
+      </div>
       <div class="mini-cal-nav">
         <button class="mini-cal-btn" onclick="changeMiniMonth(-1)">‹</button>
         <div class="mini-cal-title" id="miniCalTitle"></div>
@@ -249,6 +283,10 @@ tr:hover td{background:rgba(0,200,83,.025);}
     </div>
   </div>
   <div class="section-title">Calendario del mes</div>
+  <div class="cal-legend">
+    <span><span class="cal-legend-dot pending"></span>Pendiente de pago</span>
+    <span><span class="cal-legend-dot done"></span>Ya pagado</span>
+  </div>
   <div class="cal-nav">
     <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
     <div class="cal-month-title" id="calMonthTitle"></div>
@@ -436,7 +474,6 @@ function renderAll(){
   const dd=document.getElementById('disponibleDisplay');
   dd.textContent=fmt(disp);dd.style.color=disp>=0?'var(--success)':'var(--danger)';
   document.getElementById('pctDisplay').textContent=pct+'%';
-  // also refresh open tabs
   if(document.getElementById('tab-modificar').classList.contains('active'))renderModificar();
   if(document.getElementById('tab-config').classList.contains('active')){renderTarjetas();document.getElementById('configIngreso').value=state.ingreso;}
 }
@@ -506,7 +543,11 @@ function renderMiniCal(){
   for(let i=0;i<primerDia;i++)html+=`<div class="mcd empty"></div>`;
   for(let d=1;d<=diasEnMes;d++){
     const pagos=byDay[d]||[];
-    const pills=pagos.slice(0,2).map(p=>`<div class="mcd-pill ${isPaid(curMk,p.id)?'paid':''}">${p.concepto.substring(0,7)}</div>`).join('');
+    // Cada pill: rojo si pendiente, verde si pagado
+    const pills=pagos.slice(0,2).map(p=>{
+      const paid=isPaid(curMk,p.id);
+      return `<div class="mcd-pill ${paid?'paid':''}">${p.concepto.substring(0,7)}</div>`;
+    }).join('');
     const more=pagos.length>2?`<div class="mcd-pill">+${pagos.length-2}</div>`:'';
     html+=`<div class="mcd ${esHoy(d)?'today':''} ${pagos.length?'has-pay':''}"><div class="mcd-num">${d}</div>${pills}${more}</div>`;
   }
@@ -548,7 +589,7 @@ function pagarCuota(id){
   const d=state.deudas.find(x=>x.id===id);if(!d)return;
   if(isPaid(curMk,id)){delete state.pagos[`${curMk}-${id}`];if(d.pagadas>0)d.pagadas--;notify(`Desmarcado: ${d.entidad}`);}
   else{state.pagos[`${curMk}-${id}`]=true;if(d.pagadas<d.total)d.pagadas++;notify(`✓ ${d.entidad}`);}
-  save();renderAll();renderPagos();
+  save();renderAll();renderPagos();renderCalendar();
 }
 
 // FULL CAL
@@ -569,7 +610,11 @@ function renderCalendar(){
   for(let i=0;i<primerDia;i++)html+=`<div class="cal-day empty"></div>`;
   for(let d=1;d<=diasEnMes;d++){
     const pagos=byDay[d]||[];
-    const pills=pagos.map(p=>`<div class="cal-pill ${isPaid(curMk,p.id)?'paid':''}">${p.concepto.substring(0,11)}</div>`).join('');
+    // Cada pill: rojo si pendiente, verde si pagado
+    const pills=pagos.map(p=>{
+      const paid=isPaid(curMk,p.id);
+      return `<div class="cal-pill ${paid?'paid':''}">${p.concepto.substring(0,12)}</div>`;
+    }).join('');
     html+=`<div class="cal-day ${esHoy(d)?'today':''} ${pagos.length?'has-payment':''}"><div class="cal-day-num">${d}</div>${pagos.length?`<div class="cal-pills">${pills}</div>`:''}</div>`;
   }
   document.getElementById('calendarGrid').innerHTML=html;
@@ -588,7 +633,6 @@ function renderModificar(){
     </tr>`;
   }).join('')||'<tr><td colspan="4" class="empty-state">Sin deudas</td></tr>';
 
-  // TOTAL DEUDAS: suma saldo restante de deudas activas
   const totalDeudas=state.deudas.filter(d=>d.pagadas<d.total).reduce((s,d)=>s+(d.total-d.pagadas)*d.cuota,0);
   document.getElementById('totalDeudasCell').textContent=fmt(totalDeudas);
 
