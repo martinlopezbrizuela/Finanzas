@@ -12,6 +12,7 @@
   --accent:#00c853;--accent2:#00e676;--accent3:#69f0ae;
   --text:#e8f5e9;--muted:#4a7a5a;--muted2:#6a9a7a;
   --success:#00e676;--danger:#ff5252;--warning:#ffab40;--gold:#ffd54f;
+  --info:#40c4ff;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;
@@ -78,6 +79,7 @@ tr:hover td{background:rgba(0,200,83,.025);}
 .br{background:rgba(255,82,82,.12);color:var(--danger);border:1px solid rgba(255,82,82,.2);}
 .bg{background:rgba(0,230,118,.12);color:var(--success);border:1px solid rgba(0,230,118,.2);}
 .bo{background:rgba(255,171,64,.12);color:var(--warning);border:1px solid rgba(255,171,64,.2);}
+.binfo{background:rgba(64,196,255,.1);color:var(--info);border:1px solid rgba(64,196,255,.25);}
 
 /* ACTION BTNS */
 .act-btn{background:transparent;border:1px solid var(--border2);color:var(--muted2);cursor:pointer;font-size:11px;padding:4px 10px;border-radius:2px;transition:all .15s;font-family:'IBM Plex Mono',monospace;margin-right:3px;}
@@ -122,20 +124,8 @@ tr:hover td{background:rgba(0,200,83,.025);}
 .mcd.today .mcd-num{color:var(--accent);font-weight:700;}
 .mcd.has-pay{background:var(--surface2);}
 .mcd-num{font-family:'IBM Plex Mono',monospace;font-size:9px;margin-bottom:2px;font-weight:500;}
-
-/* Mini calendar pills — rojo=pendiente, verde=pagado */
-.mcd-pill{
-  font-size:7px;font-family:'IBM Plex Mono',monospace;
-  border-radius:1px;padding:1px 2px;width:100%;text-align:center;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  line-height:1.3;margin-bottom:1px;
-  background:rgba(255,82,82,.18);color:#ff8a80;border:1px solid rgba(255,82,82,.25);
-}
-.mcd-pill.paid{
-  background:rgba(0,230,118,.15);color:var(--success);
-  border:1px solid rgba(0,230,118,.25);
-  text-decoration:none;
-}
+.mcd-pill{font-size:7px;font-family:'IBM Plex Mono',monospace;border-radius:1px;padding:1px 2px;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-bottom:1px;background:rgba(255,82,82,.18);color:#ff8a80;border:1px solid rgba(255,82,82,.25);}
+.mcd-pill.paid{background:rgba(0,230,118,.15);color:var(--success);border:1px solid rgba(0,230,118,.25);}
 
 /* FULL CALENDAR */
 .cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -151,26 +141,15 @@ tr:hover td{background:rgba(0,200,83,.025);}
 .cal-day.has-payment{background:var(--surface2);}
 .cal-day-num{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;margin-bottom:3px;}
 .cal-pills{width:100%;display:flex;flex-direction:column;gap:2px;}
-
-/* Full calendar pills — rojo=pendiente, verde=pagado */
-.cal-pill{
-  font-size:8px;font-family:'IBM Plex Mono',monospace;
-  border-radius:1px;padding:2px 3px;width:100%;text-align:center;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;
-  background:rgba(255,82,82,.18);color:#ff8a80;
-  border-left:2px solid var(--danger);
-  transition:all .2s;
-}
-.cal-pill.paid{
-  background:rgba(0,230,118,.12);color:var(--success);
-  border-left:2px solid var(--success);
-}
-
-/* Indicador de leyenda en el calendario */
+.cal-pill{font-size:8px;font-family:'IBM Plex Mono',monospace;border-radius:1px;padding:2px 3px;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;background:rgba(255,82,82,.18);color:#ff8a80;border-left:2px solid var(--danger);transition:all .2s;}
+.cal-pill.paid{background:rgba(0,230,118,.12);color:var(--success);border-left:2px solid var(--success);}
+.cal-pill.tarjeta{background:rgba(64,196,255,.12);color:var(--info);border-left:2px solid var(--info);}
+.cal-pill.tarjeta.paid{background:rgba(0,230,118,.12);color:var(--success);border-left:2px solid var(--success);}
 .cal-legend{display:flex;gap:16px;align-items:center;margin-bottom:12px;font-size:9px;font-family:'IBM Plex Mono',monospace;color:var(--muted2);}
 .cal-legend-dot{width:8px;height:8px;border-radius:1px;display:inline-block;margin-right:4px;}
 .cal-legend-dot.pending{background:var(--danger);}
 .cal-legend-dot.done{background:var(--success);}
+.cal-legend-dot.card{background:var(--info);}
 
 /* MOD LAYOUT */
 .mod-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
@@ -191,6 +170,35 @@ tr:hover td{background:rgba(0,200,83,.025);}
 .modal{background:var(--surface);border:1px solid var(--border2);border-top:2px solid var(--accent);padding:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;}
 .modal-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);}
 .modal-actions{display:flex;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+
+/* TARJETA PAGO — selector de tipo */
+.pago-tipo-wrap{display:flex;gap:6px;margin-bottom:14px;}
+.pago-tipo-btn{flex:1;padding:8px 6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;border-radius:2px;transition:all .15s;text-align:center;}
+.pago-tipo-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+.pago-tipo-btn.active{background:rgba(0,200,83,.1);border-color:var(--accent);color:var(--accent2);}
+
+/* Resumen pago tarjeta en tabla */
+.tarjeta-pago-info{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted2);margin-top:2px;}
+.tarjeta-pago-info.pagado{color:var(--success);}
+
+/* Inline pago tarjeta — fila expandible */
+.tarjeta-pago-row{background:var(--surface2);border-top:none !important;}
+.tarjeta-pago-row td{padding:10px 12px !important;border-top:none !important;}
+.tarjeta-inline-form{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.tarjeta-inline-form .form-input{width:160px;padding:6px 9px;font-size:12px;}
+.tarjeta-inline-tipo{display:flex;gap:4px;}
+.tip-btn{padding:4px 9px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-size:9px;font-weight:700;letter-spacing:.5px;font-family:'IBM Plex Mono',monospace;border-radius:2px;transition:all .12s;white-space:nowrap;}
+.tip-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+.tip-btn.sel{background:rgba(0,200,83,.1);border-color:var(--accent);color:var(--accent2);}
+.tip-btn.sel-min{background:rgba(255,171,64,.1);border-color:var(--warning);color:var(--warning);}
+.inline-save-btn{padding:5px 12px;border:1px solid var(--accent);background:rgba(0,200,83,.1);color:var(--accent2);cursor:pointer;font-size:9px;font-weight:700;letter-spacing:1px;font-family:'IBM Plex Mono',monospace;border-radius:2px;transition:all .12s;white-space:nowrap;}
+.inline-save-btn:hover{background:rgba(0,200,83,.2);}
+.inline-cancel-btn{padding:5px 10px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;font-size:9px;font-family:'IBM Plex Mono',monospace;border-radius:2px;transition:all .12s;}
+.inline-cancel-btn:hover{border-color:var(--danger);color:var(--danger);}
+
+/* Tarjeta check btn en tabla de pagos */
+.tarjeta-check-area{display:flex;align-items:center;gap:8px;}
+.tarjeta-estado-badge{font-size:9px;font-family:'IBM Plex Mono',monospace;white-space:nowrap;}
 
 @media(max-width:900px){.mod-layout,.pagos-layout{grid-template-columns:1fr;}.dash-layout{grid-template-columns:1fr;}}
 @media(max-width:600px){.cards-grid{grid-template-columns:1fr 1fr;}.main{padding:14px;}.header-right{display:none;}.tabs{padding:0;}}
@@ -245,6 +253,7 @@ tr:hover td{background:rgba(0,200,83,.025);}
       <div class="cal-legend">
         <span><span class="cal-legend-dot pending"></span>Pendiente</span>
         <span><span class="cal-legend-dot done"></span>Pagado</span>
+        <span><span class="cal-legend-dot card"></span>Tarjeta</span>
       </div>
       <div class="mini-cal-nav">
         <button class="mini-cal-btn" onclick="changeMiniMonth(-1)">‹</button>
@@ -282,10 +291,23 @@ tr:hover td{background:rgba(0,200,83,.025);}
       </table></div>
     </div>
   </div>
+
+  <!-- TARJETAS DE CRÉDITO -->
+  <div class="section-title">Tarjetas de crédito — registrar pago</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Banco / Tarjeta</th><th>Saldo pendiente</th><th>Pago mínimo est.</th><th>Vto.</th><th>Estado / Acción</th></tr></thead>
+    <tbody id="pagosTarjetasBody"></tbody>
+    <tfoot>
+      <tr class="total-row"><td>Pagado este mes</td><td class="mono" id="tarjetasAbonado">—</td><td colspan="3"></td></tr>
+      <tr class="total-row" style="opacity:.6"><td>Saldo total pendiente</td><td class="mono" id="tarjetasSaldoTotal">—</td><td colspan="3"></td></tr>
+    </tfoot>
+  </table></div>
+
   <div class="section-title">Calendario del mes</div>
   <div class="cal-legend">
-    <span><span class="cal-legend-dot pending"></span>Pendiente de pago</span>
-    <span><span class="cal-legend-dot done"></span>Ya pagado</span>
+    <span><span class="cal-legend-dot pending"></span>Pendiente</span>
+    <span><span class="cal-legend-dot done"></span>Pagado</span>
+    <span><span class="cal-legend-dot card"></span>Tarjeta</span>
   </div>
   <div class="cal-nav">
     <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -339,9 +361,9 @@ tr:hover td{background:rgba(0,200,83,.025);}
 
     <div class="section-title">Tarjetas de crédito</div>
     <div class="table-wrap"><table>
-      <thead><tr><th>Banco / Tarjeta</th><th>Saldo pendiente</th><th>Límite</th><th>Día vto.</th><th>Acciones</th></tr></thead>
+      <thead><tr><th>Banco / Tarjeta</th><th>Saldo pendiente</th><th>Límite</th><th>Pago mín. est.</th><th>Día vto.</th><th>Acciones</th></tr></thead>
       <tbody id="tarjetasBody"></tbody>
-      <tfoot><tr class="total-row"><td>TOTAL</td><td class="mono" id="totalTarjetasCell">—</td><td colspan="3"></td></tr></tfoot>
+      <tfoot><tr class="total-row"><td>TOTAL SALDO</td><td class="mono" id="totalTarjetasCell">—</td><td colspan="4"></td></tr></tfoot>
     </table></div>
     <button class="btn btn-accent btn-sm" onclick="openModal('tarjeta',null)" style="margin-bottom:24px;">+ Nueva tarjeta</button>
 
@@ -372,10 +394,12 @@ tr:hover td{background:rgba(0,200,83,.025);}
 <script>
 const BIN_URL='https://api.jsonbin.io/v3/b/6a07c8c1250b1311c358cd7a';
 const BIN_KEY='$2a$10$7rFsw/Rs1i.Z39Kt2LYdVuNmfJc0OR5xy706GRKw28q1wUi3tVChK';
-let state={ingreso:55000000,tarjetas:[],deudas:[],gastos:[],pagos:{}};
+let state={ingreso:55000000,tarjetas:[],deudas:[],gastos:[],pagos:{},pagosTarjetas:{}};
 let modalType=null,modalId=null;
 let miniCalYear,miniCalMonth,calYear,calMonth;
 let saveTimer=null;
+// Track qué tarjeta tiene el form inline abierto
+let tarjetaFormOpen=null;
 
 function showSyncStatus(msg,color){
   const el=document.getElementById('syncStatus');
@@ -392,11 +416,12 @@ async function load(){
     state={...state,...data.record};
     if(!state.tarjetas)state.tarjetas=[];
     if(!state.pagos)state.pagos={};
+    if(!state.pagosTarjetas)state.pagosTarjetas={};
     showSyncStatus('✓ Sincronizado','var(--success)');
   }catch(e){
     showSyncStatus('⚠ Sin conexión — datos locales','var(--warning)');
     const raw=localStorage.getItem('cfp_v3');
-    if(raw){try{state={...state,...JSON.parse(raw)};}catch(ex){}}
+    if(raw){try{state={...state,...JSON.parse(raw)};if(!state.pagosTarjetas)state.pagosTarjetas={};}catch(ex){}}
     else seedData();
   }
 }
@@ -420,7 +445,7 @@ async function save(){
 }
 
 function seedData(){
-  state.tarjetas=[{id:'t1',banco:'Banco Continental',saldo:9921650,limite:0,vto_dia:15}];
+  state.tarjetas=[{id:'t1',banco:'Banco Continental',saldo:9921650,limite:0,vto_dia:15,pago_minimo:500000}];
   state.deudas=[
     {id:'d1',entidad:'Coopexsanjo',cuota:736747,total:3,pagadas:0,dia_vto:5,color:'bg'},
     {id:'d2',entidad:'Banco Continental',cuota:3403603,total:18,pagadas:0,dia_vto:10,color:'bb'},
@@ -449,6 +474,16 @@ function seedData(){
 const fmt=n=>'Gs. '+Math.round(n).toLocaleString('es-PY');
 const mkKey=(y,m)=>`${y}-${String(m+1).padStart(2,'0')}`;
 const isPaid=(k,id)=>!!(state.pagos[`${k}-${id}`]);
+
+// Clave para pago de tarjeta: año-mes-tarjetaId
+const tarjetaPagoKey=(mk,id)=>`${mk}-${id}`;
+function getTarjetaPago(mk,id){return state.pagosTarjetas[tarjetaPagoKey(mk,id)]||null;}
+function setTarjetaPago(mk,id,tipo,monto){state.pagosTarjetas[tarjetaPagoKey(mk,id)]={tipo,monto,fecha:new Date().toISOString()};}
+function clearTarjetaPago(mk,id){delete state.pagosTarjetas[tarjetaPagoKey(mk,id)];}
+
+// Pago mínimo estimado: 5% del saldo o monto fijo si está definido
+function pagoMinEst(t){return t.pago_minimo>0?t.pago_minimo:Math.round(t.saldo*0.05);}
+
 function togglePago(k,id){const key=`${k}-${id}`;if(state.pagos[key])delete state.pagos[key];else state.pagos[key]=true;save();renderAll();renderPagos();}
 function notify(msg){const el=document.getElementById('notif');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
 
@@ -465,7 +500,6 @@ function showTab(name,el){
 function renderAll(){
   renderDashboard();
   renderMiniCal();
-  const hoy=new Date();
   const tc=state.deudas.reduce((s,d)=>d.pagadas<d.total?s+d.cuota:s,0);
   const tg=state.gastos.reduce((s,g)=>s+g.monto,0);
   const disp=state.ingreso-tc-tg;
@@ -485,7 +519,9 @@ function renderDashboard(){
   const tt=(state.tarjetas||[]).reduce((s,t)=>s+t.saldo,0);
   const disp=state.ingreso-tc-tg;
   const pct=Math.round((tc+tg)/state.ingreso*100);
-  const pm=state.deudas.filter(d=>isPaid(curMk,d.id)).reduce((s,d)=>s+d.cuota,0)+state.gastos.filter(g=>isPaid(curMk,g.id)).reduce((s,g)=>s+g.monto,0);
+  const pm=state.deudas.filter(d=>isPaid(curMk,d.id)).reduce((s,d)=>s+d.cuota,0)
+    +state.gastos.filter(g=>isPaid(curMk,g.id)).reduce((s,g)=>s+g.monto,0)
+    +(state.tarjetas||[]).reduce((s,t)=>{const p=getTarjetaPago(curMk,t.id);return p?s+p.monto:s;},0);
 
   document.getElementById('cardsGrid').innerHTML=`
     <div class="card c-green"><div class="card-label">Ingreso</div><div class="card-value cv-green">${fmt(state.ingreso)}</div></div>
@@ -502,16 +538,18 @@ function renderDashboard(){
 
   const hoyDia=hoy.getDate();
   let items=[];
-  state.deudas.filter(d=>d.pagadas<d.total).forEach(d=>items.push({concepto:d.entidad,dia:d.dia_vto,monto:d.cuota,id:d.id,diff:d.dia_vto-hoyDia}));
-  state.gastos.forEach(g=>items.push({concepto:g.concepto,dia:g.dia||1,monto:g.monto,id:g.id,diff:(g.dia||1)-hoyDia}));
+  state.deudas.filter(d=>d.pagadas<d.total).forEach(d=>items.push({concepto:d.entidad,dia:d.dia_vto,monto:d.cuota,id:d.id,diff:d.dia_vto-hoyDia,tipo:'deuda'}));
+  state.gastos.forEach(g=>items.push({concepto:g.concepto,dia:g.dia||1,monto:g.monto,id:g.id,diff:(g.dia||1)-hoyDia,tipo:'gasto'}));
+  (state.tarjetas||[]).forEach(t=>items.push({concepto:t.banco+' [TC]',dia:t.vto_dia||15,monto:pagoMinEst(t),id:t.id,diff:(t.vto_dia||15)-hoyDia,tipo:'tarjeta'}));
   items.sort((a,b)=>a.dia-b.dia);
-  document.getElementById('proximosBody').innerHTML=items.slice(0,8).map(i=>{
-    const paid=isPaid(curMk,i.id);
+  document.getElementById('proximosBody').innerHTML=items.slice(0,10).map(i=>{
+    const paid=i.tipo==='tarjeta'?!!getTarjetaPago(curMk,i.id):isPaid(curMk,i.id);
     let badge=`<span class="badge bb">Día ${i.dia}</span>`;
     if(paid)badge=`<span class="badge bg">✓ Pagado</span>`;
     else if(i.diff<0)badge=`<span class="badge br">Vencido ${Math.abs(i.diff)}d</span>`;
     else if(i.diff<=3)badge=`<span class="badge bo">En ${i.diff}d</span>`;
-    return `<tr><td>${i.concepto}</td><td class="mono">${i.dia}</td><td class="mono">${fmt(i.monto)}</td><td>${badge}</td></tr>`;
+    const tipoTag=i.tipo==='tarjeta'?` <span class="badge binfo" style="font-size:8px">TC</span>`:'';
+    return `<tr><td>${i.concepto}${tipoTag}</td><td class="mono">${i.dia}</td><td class="mono">${fmt(i.monto)}</td><td>${badge}</td></tr>`;
   }).join('')||'<tr><td colspan="4" class="empty-state">Sin datos</td></tr>';
 
   document.getElementById('deudasResumenBody').innerHTML=state.deudas.filter(d=>d.pagadas<d.total).map(d=>{
@@ -533,8 +571,9 @@ function renderMiniCal(){
   document.getElementById('miniCalTitle').textContent=`${meses[miniCalMonth]} ${miniCalYear}`;
   const curMk=mkKey(miniCalYear,miniCalMonth);
   const byDay={};
-  state.deudas.filter(d=>d.pagadas<d.total).forEach(d=>{if(!byDay[d.dia_vto])byDay[d.dia_vto]=[];byDay[d.dia_vto].push({concepto:d.entidad,id:d.id});});
-  state.gastos.forEach(g=>{const dia=g.dia||1;if(!byDay[dia])byDay[dia]=[];byDay[dia].push({concepto:g.concepto,id:g.id});});
+  state.deudas.filter(d=>d.pagadas<d.total).forEach(d=>{if(!byDay[d.dia_vto])byDay[d.dia_vto]=[];byDay[d.dia_vto].push({concepto:d.entidad,id:d.id,tipo:'deuda'});});
+  state.gastos.forEach(g=>{const dia=g.dia||1;if(!byDay[dia])byDay[dia]=[];byDay[dia].push({concepto:g.concepto,id:g.id,tipo:'gasto'});});
+  (state.tarjetas||[]).forEach(t=>{const dia=t.vto_dia||15;if(!byDay[dia])byDay[dia]=[];byDay[dia].push({concepto:t.banco,id:t.id,tipo:'tarjeta'});});
   const primerDia=new Date(miniCalYear,miniCalMonth,1).getDay();
   const diasEnMes=new Date(miniCalYear,miniCalMonth+1,0).getDate();
   const hoy=new Date();const esHoy=d=>miniCalYear===hoy.getFullYear()&&miniCalMonth===hoy.getMonth()&&d===hoy.getDate();
@@ -543,9 +582,8 @@ function renderMiniCal(){
   for(let i=0;i<primerDia;i++)html+=`<div class="mcd empty"></div>`;
   for(let d=1;d<=diasEnMes;d++){
     const pagos=byDay[d]||[];
-    // Cada pill: rojo si pendiente, verde si pagado
     const pills=pagos.slice(0,2).map(p=>{
-      const paid=isPaid(curMk,p.id);
+      const paid=p.tipo==='tarjeta'?!!getTarjetaPago(curMk,p.id):isPaid(curMk,p.id);
       return `<div class="mcd-pill ${paid?'paid':''}">${p.concepto.substring(0,7)}</div>`;
     }).join('');
     const more=pagos.length>2?`<div class="mcd-pill">+${pagos.length-2}</div>`:'';
@@ -582,6 +620,141 @@ function renderPagos(){
   document.getElementById('gastosAbonado').style.color='var(--success)';
   document.getElementById('gastosPendiente').textContent=fmt(gPendiente);
   document.getElementById('gastosPendiente').style.color=gPendiente>0?'var(--warning)':'var(--muted)';
+
+  // TARJETAS
+  renderTarjetasPagos(curMk);
+}
+
+function renderTarjetasPagos(curMk){
+  if(!curMk){const h=new Date();curMk=mkKey(h.getFullYear(),h.getMonth());}
+  const tbody=document.getElementById('pagosTarjetasBody');
+  if(!tbody)return;
+
+  let rows='';
+  (state.tarjetas||[]).forEach(t=>{
+    const pago=getTarjetaPago(curMk,t.id);
+    const minEst=pagoMinEst(t);
+    const isOpen=(tarjetaFormOpen===t.id);
+
+    if(pago){
+      // Ya registrado: mostrar resumen + botón deshacer
+      const tipoLabel=pago.tipo==='minimo'?'<span class="badge bo">Mínimo</span>':pago.tipo==='total'?'<span class="badge bg">Total</span>':'<span class="badge bb">Parcial</span>';
+      rows+=`<tr>
+        <td style="font-weight:600">${t.banco}</td>
+        <td class="mono" style="color:var(--danger)">${fmt(t.saldo)}</td>
+        <td class="mono" style="color:var(--muted2)">${fmt(minEst)}</td>
+        <td><span class="badge bb">Día ${t.vto_dia||'—'}</span></td>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            ${tipoLabel}
+            <span class="mono" style="color:var(--success);font-size:11px">${fmt(pago.monto)}</span>
+            <button class="act-btn del" onclick="deshacerPagoTarjeta('${t.id}')">✕ Deshacer</button>
+          </div>
+        </td>
+      </tr>`;
+    } else {
+      // Sin pago: mostrar fila con botón "Registrar pago"
+      rows+=`<tr id="trow-${t.id}">
+        <td style="font-weight:600">${t.banco}</td>
+        <td class="mono" style="color:var(--danger)">${fmt(t.saldo)}</td>
+        <td class="mono" style="color:var(--muted2)">${fmt(minEst)}</td>
+        <td><span class="badge bb">Día ${t.vto_dia||'—'}</span></td>
+        <td>
+          ${isOpen
+            ? `<span class="badge br">Editando...</span>`
+            : `<button class="act-btn" onclick="toggleTarjetaForm('${t.id}')">+ Registrar pago</button>`
+          }
+        </td>
+      </tr>`;
+      // Fila inline del formulario
+      if(isOpen){
+        rows+=`<tr class="tarjeta-pago-row" id="tform-${t.id}">
+          <td colspan="5">
+            <div class="tarjeta-inline-form" id="tinlineform-${t.id}">
+              <div class="tarjeta-inline-tipo">
+                <button class="tip-btn sel-min" id="ttipo-minimo-${t.id}" onclick="selectTarjetaTipo('${t.id}','minimo')">Mín. ${fmt(minEst)}</button>
+                <button class="tip-btn" id="ttipo-total-${t.id}" onclick="selectTarjetaTipo('${t.id}','total')">Total ${fmt(t.saldo)}</button>
+                <button class="tip-btn" id="ttipo-otro-${t.id}" onclick="selectTarjetaTipo('${t.id}','otro')">Otro monto</button>
+              </div>
+              <input class="form-input" type="number" id="tmonto-${t.id}" value="${minEst}" placeholder="Monto" style="width:160px;padding:6px 9px;font-size:12px;" oninput="onTarjetaMontoChange('${t.id}')">
+              <button class="inline-save-btn" onclick="guardarPagoTarjeta('${t.id}')">✓ Guardar</button>
+              <button class="inline-cancel-btn" onclick="toggleTarjetaForm(null)">Cancelar</button>
+            </div>
+          </td>
+        </tr>`;
+      }
+    }
+  });
+
+  tbody.innerHTML=rows||'<tr><td colspan="5" class="empty-state">Sin tarjetas registradas</td></tr>';
+
+  // Totales
+  const tAbonado=(state.tarjetas||[]).reduce((s,t)=>{const p=getTarjetaPago(curMk,t.id);return p?s+p.monto:s;},0);
+  const tSaldo=(state.tarjetas||[]).reduce((s,t)=>s+t.saldo,0);
+  const elAbo=document.getElementById('tarjetasAbonado');
+  const elSaldo=document.getElementById('tarjetasSaldoTotal');
+  if(elAbo){elAbo.textContent=fmt(tAbonado);elAbo.style.color=tAbonado>0?'var(--success)':'var(--muted2)';}
+  if(elSaldo){elSaldo.textContent=fmt(tSaldo);elSaldo.style.color='var(--danger)';}
+}
+
+// selectedTarjetaTipo: objeto {id: tipo}
+const tarjetaTipos={};
+function selectTarjetaTipo(id,tipo){
+  tarjetaTipos[id]=tipo;
+  const t=state.tarjetas.find(x=>x.id===id);
+  if(!t)return;
+  const minEst=pagoMinEst(t);
+  // Actualizar estilos
+  ['minimo','total','otro'].forEach(tp=>{
+    const btn=document.getElementById(`ttipo-${tp}-${id}`);
+    if(btn){btn.className='tip-btn'+(tp===tipo?(tp==='minimo'?' sel-min':' sel'):'');}
+  });
+  // Autocompletar monto
+  const input=document.getElementById(`tmonto-${id}`);
+  if(!input)return;
+  if(tipo==='minimo')input.value=minEst;
+  else if(tipo==='total')input.value=t.saldo;
+  // 'otro': dejar el campo libre, no cambiar
+}
+
+function onTarjetaMontoChange(id){
+  // Si el usuario escribe manualmente, cambiar a tipo 'otro'
+  const input=document.getElementById(`tmonto-${id}`);
+  if(!input)return;
+  const t=state.tarjetas.find(x=>x.id===id);
+  if(!t)return;
+  const minEst=pagoMinEst(t);
+  const val=parseInt(input.value)||0;
+  if(val===minEst)selectTarjetaTipo(id,'minimo');
+  else if(val===t.saldo)selectTarjetaTipo(id,'total');
+  else{tarjetaTipos[id]='otro';['minimo','total','otro'].forEach(tp=>{const btn=document.getElementById(`ttipo-${tp}-${id}`);if(btn)btn.className='tip-btn'+(tp==='otro'?' sel':'');});}
+}
+
+function toggleTarjetaForm(id){
+  tarjetaFormOpen=(tarjetaFormOpen===id)?null:id;
+  if(id)tarjetaTipos[id]='minimo';
+  const h=new Date();renderTarjetasPagos(mkKey(h.getFullYear(),h.getMonth()));
+}
+
+function guardarPagoTarjeta(id){
+  const t=state.tarjetas.find(x=>x.id===id);if(!t)return;
+  const input=document.getElementById(`tmonto-${id}`);
+  const monto=parseInt(input?input.value:0)||0;
+  if(monto<=0){notify('⚠ Ingresá un monto válido');return;}
+  const tipo=tarjetaTipos[id]||'otro';
+  const h=new Date();const curMk=mkKey(h.getFullYear(),h.getMonth());
+  setTarjetaPago(curMk,id,tipo,monto);
+  tarjetaFormOpen=null;
+  save();renderAll();renderTarjetasPagos(curMk);
+  notify(`✓ Pago ${tipo==='minimo'?'mínimo':tipo==='total'?'total':'parcial'} registrado — ${t.banco}`);
+}
+
+function deshacerPagoTarjeta(id){
+  const t=state.tarjetas.find(x=>x.id===id);if(!t)return;
+  const h=new Date();const curMk=mkKey(h.getFullYear(),h.getMonth());
+  clearTarjetaPago(curMk,id);
+  save();renderAll();renderTarjetasPagos(curMk);
+  notify(`Pago de ${t.banco} desmarcado`);
 }
 
 function pagarCuota(id){
@@ -600,8 +773,9 @@ function renderCalendar(){
   document.getElementById('calMonthTitle').textContent=`${meses[calMonth]} ${calYear}`;
   const curMk=mkKey(calYear,calMonth);
   const byDay={};
-  state.deudas.filter(d=>d.pagadas<d.total).forEach(d=>{if(!byDay[d.dia_vto])byDay[d.dia_vto]=[];byDay[d.dia_vto].push({concepto:d.entidad,id:d.id});});
-  state.gastos.forEach(g=>{const dia=g.dia||1;if(!byDay[dia])byDay[dia]=[];byDay[dia].push({concepto:g.concepto,id:g.id});});
+  state.deudas.filter(d=>d.pagadas<d.total).forEach(d=>{if(!byDay[d.dia_vto])byDay[d.dia_vto]=[];byDay[d.dia_vto].push({concepto:d.entidad,id:d.id,tipo:'deuda'});});
+  state.gastos.forEach(g=>{const dia=g.dia||1;if(!byDay[dia])byDay[dia]=[];byDay[dia].push({concepto:g.concepto,id:g.id,tipo:'gasto'});});
+  (state.tarjetas||[]).forEach(t=>{const dia=t.vto_dia||15;if(!byDay[dia])byDay[dia]=[];byDay[dia].push({concepto:t.banco,id:t.id,tipo:'tarjeta'});});
   const primerDia=new Date(calYear,calMonth,1).getDay();
   const diasEnMes=new Date(calYear,calMonth+1,0).getDate();
   const hoy=new Date();const esHoy=d=>calYear===hoy.getFullYear()&&calMonth===hoy.getMonth()&&d===hoy.getDate();
@@ -610,10 +784,10 @@ function renderCalendar(){
   for(let i=0;i<primerDia;i++)html+=`<div class="cal-day empty"></div>`;
   for(let d=1;d<=diasEnMes;d++){
     const pagos=byDay[d]||[];
-    // Cada pill: rojo si pendiente, verde si pagado
     const pills=pagos.map(p=>{
-      const paid=isPaid(curMk,p.id);
-      return `<div class="cal-pill ${paid?'paid':''}">${p.concepto.substring(0,12)}</div>`;
+      const paid=p.tipo==='tarjeta'?!!getTarjetaPago(curMk,p.id):isPaid(curMk,p.id);
+      const extraClass=p.tipo==='tarjeta'&&!paid?'tarjeta':p.tipo==='tarjeta'&&paid?'tarjeta paid':paid?'paid':'';
+      return `<div class="cal-pill ${extraClass}">${p.concepto.substring(0,12)}</div>`;
     }).join('');
     html+=`<div class="cal-day ${esHoy(d)?'today':''} ${pagos.length?'has-payment':''}"><div class="cal-day-num">${d}</div>${pagos.length?`<div class="cal-pills">${pills}</div>`:''}</div>`;
   }
@@ -655,7 +829,7 @@ function deleteItem(type,id){
   save();renderAll();renderTarjetas();notify('Eliminado');
 }
 
-// TARJETAS
+// TARJETAS CONFIG
 function renderTarjetas(){
   if(!state.tarjetas)state.tarjetas=[];
   const total=state.tarjetas.reduce((s,t)=>s+t.saldo,0);
@@ -663,14 +837,16 @@ function renderTarjetas(){
   const tbody=document.getElementById('tarjetasBody');if(!tbody)return;
   tbody.innerHTML=state.tarjetas.map(t=>{
     const uso=t.limite>0?` (${Math.round(t.saldo/t.limite*100)}%)`:'';
+    const minEst=pagoMinEst(t);
     return `<tr>
       <td style="font-weight:600">${t.banco}</td>
       <td class="mono" style="color:var(--danger)">${fmt(t.saldo)}</td>
       <td class="mono" style="color:var(--muted2)">${t.limite>0?fmt(t.limite)+uso:'—'}</td>
+      <td class="mono" style="color:var(--warning)">${fmt(minEst)}</td>
       <td><span class="badge bb">Día ${t.vto_dia||'—'}</span></td>
       <td><button class="act-btn" onclick="openModal('tarjeta','${t.id}')">✎ Editar</button><button class="act-btn del" onclick="deleteItem('tarjeta','${t.id}')">✕</button></td>
     </tr>`;
-  }).join('')||'<tr><td colspan="5" class="empty-state">Sin tarjetas</td></tr>';
+  }).join('')||'<tr><td colspan="6" class="empty-state">Sin tarjetas</td></tr>';
 }
 
 // MODAL
@@ -711,6 +887,7 @@ function openModal(type,id){
       <div class="form-group"><label class="form-label">Banco / Nombre</label><input class="form-input" id="m_banco" value="${item?item.banco:''}" placeholder="Banco Itaú"></div>
       <div class="form-group"><label class="form-label">Saldo pendiente (Gs.)</label><input class="form-input" id="m_saldo" type="number" value="${item?item.saldo:''}" placeholder="5000000"></div>
       <div class="form-group"><label class="form-label">Límite de crédito (Gs.)</label><input class="form-input" id="m_limite" type="number" value="${item?item.limite:0}" placeholder="20000000"></div>
+      <div class="form-group"><label class="form-label">Pago mínimo fijo (Gs.) — opcional</label><input class="form-input" id="m_pmin" type="number" value="${item&&item.pago_minimo?item.pago_minimo:''}" placeholder="Si no, se usa 5% del saldo"></div>
       <div class="form-group"><label class="form-label">Día de vencimiento</label><input class="form-input" id="m_tdia" type="number" min="1" max="31" value="${item?item.vto_dia:15}" placeholder="15"></div>
     </div>`;
   }
@@ -754,11 +931,12 @@ function saveTarjetaModal(){
   const banco=document.getElementById('m_banco').value.trim();
   const saldo=parseInt(document.getElementById('m_saldo').value)||0;
   const limite=parseInt(document.getElementById('m_limite').value)||0;
+  const pago_minimo=parseInt(document.getElementById('m_pmin').value)||0;
   const dia=parseInt(document.getElementById('m_tdia').value)||15;
   if(!banco){alert('Ingresá el nombre');return;}
   if(!state.tarjetas)state.tarjetas=[];
-  if(modalId){const t=state.tarjetas.find(x=>x.id===modalId);if(t){t.banco=banco;t.saldo=saldo;t.limite=limite;t.vto_dia=dia;}notify('Tarjeta actualizada');}
-  else{state.tarjetas.push({id:'t'+Date.now(),banco,saldo,limite,vto_dia:dia});notify('Tarjeta agregada');}
+  if(modalId){const t=state.tarjetas.find(x=>x.id===modalId);if(t){t.banco=banco;t.saldo=saldo;t.limite=limite;t.pago_minimo=pago_minimo;t.vto_dia=dia;}notify('Tarjeta actualizada');}
+  else{state.tarjetas.push({id:'t'+Date.now(),banco,saldo,limite,pago_minimo,vto_dia:dia});notify('Tarjeta agregada');}
   save();renderAll();renderTarjetas();closeModal();
 }
 
@@ -771,6 +949,7 @@ function resetMes(){
   if(!confirm('¿Resetear todos los pagos del mes?'))return;
   const hoy=new Date();const curMk=mkKey(hoy.getFullYear(),hoy.getMonth());
   Object.keys(state.pagos).forEach(k=>{if(k.startsWith(curMk))delete state.pagos[k];});
+  Object.keys(state.pagosTarjetas).forEach(k=>{if(k.startsWith(curMk))delete state.pagosTarjetas[k];});
   save();renderAll();notify('Reseteado');
 }
 
